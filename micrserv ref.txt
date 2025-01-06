@@ -1,0 +1,118 @@
+Windows PowerShell
+Copyright (C) Microsoft Corporation. All rights reserved.
+
+Install the latest PowerShell for new features and improvements! https://aka.ms/PSWindows
+
+PS X:\projects\springboot\microservices> docker compose up -d
+[+] Running 3/3
+ ✔ Network microservices_postgres  Created                                                                                                                                         0.3s 
+ ✔ Container postgres              Started                                                                                                                                         1.8s 
+ ✔ Container pgadmin               Started                                                                                                                                         1.8s 
+PS X:\projects\springboot\microservices> docker exec -it postgres sh
+# ls
+bin  boot  data  dev  docker-entrypoint-initdb.d  etc  home  lib  lib64  media  mnt  opt  proc  root  run  sbin  srv  sys  tmp  usr  var
+# psql
+psql: error: connection to server on socket "/var/run/postgresql/.s.PGSQL.5432" failed: FATAL:  role "root" does not exist
+# sudo psql
+sh: 3: sudo: not found
+# root        
+sh: 4: root: not found
+# cd /data
+# ls
+postgres
+# cd postgres
+# ls
+base    pg_commit_ts  pg_hba.conf    pg_logical    pg_notify    pg_serial     pg_stat      pg_subtrans  pg_twophase  pg_wal   postgresql.auto.conf  postmaster.opts
+global  pg_dynshmem   pg_ident.conf  pg_multixact  pg_replslot  pg_snapshots  pg_stat_tmp  pg_tblspc    PG_VERSION   pg_xact  postgresql.conf       postmaster.pid
+# psql
+psql: error: connection to server on socket "/var/run/postgresql/.s.PGSQL.5432" failed: FATAL:  role "root" does not exist
+# ^C
+# sudo -u postgres psql
+sh: 10: sudo: not found
+# su -u postgres                                                                   
+Try 'su --help' for more information.
+# su postgres
+postgres@bd082bae3670:/data/postgres$ psql
+psql (16.3 (Debian 16.3-1.pgdg120+1))
+Type "help" for help.
+
+postgres=# \l
+                                                      List of databases
+   Name    |  Owner   | Encoding | Locale Provider |  Collate   |   Ctype    | ICU Locale | ICU Rules |   Access privileges
+-----------+----------+----------+-----------------+------------+------------+------------+-----------+-----------------------
+ customer  | postgres | UTF8     | libc            | en_US.utf8 | en_US.utf8 |            |           |
+ postgres  | postgres | UTF8     | libc            | en_US.utf8 | en_US.utf8 |            |           |
+ template0 | postgres | UTF8     | libc            | en_US.utf8 | en_US.utf8 |            |           | =c/postgres          +
+           |          |          |                 |            |            |            |           | postgres=CTc/postgres
+ template1 | postgres | UTF8     | libc            | en_US.utf8 | en_US.utf8 |            |           | =c/postgres          +
+           |          |          |                 |            |            |            |           | postgres=CTc/postgres
+(4 rows)
+
+postgres=# \c customer
+You are now connected to database "customer" as user "postgres".
+customer=# \d
+                  List of relations
+ Schema |         Name         |   Type   |  Owner
+--------+----------------------+----------+----------
+ public | customer_id_sequence | sequence | postgres
+(1 row)
+
+customer=# \d
+                  List of relations
+ Schema |         Name         |   Type   |  Owner
+--------+----------------------+----------+----------
+ public | customer             | table    | postgres
+ public | customer_id_sequence | sequence | postgres
+(2 rows)
+
+customer=# \t
+Tuples only is on.
+customer=# \t
+Tuples only is off.
+customer=# \x
+Expanded display is on.
+customer=# select * from customer
+customer-# ;
+-[ RECORD 1 ]-----------
+id         | 1
+email      | abc@xyz.com
+first_name | Abc
+last_name  | xyz
+
+customer=# select * from customer;
+-[ RECORD 1 ]-----------
+id         | 1
+email      | def@uvw.com
+first_name | def
+last_name  | uvw
+
+customer=# select * from customer;
+-[ RECORD 1 ]-----------
+id         | 1
+email      | def@uvw.com
+first_name | def
+last_name  | uvw
+-[ RECORD 2 ]-----------
+id         | 2
+email      | def@uvw.com
+first_name | def
+last_name  | uvw
+
+customer=# select * from customer;
+-[ RECORD 1 ]-----------
+id         | 1
+email      | def@uvw.com
+first_name | def
+last_name  | uvw
+
+customer=# \q
+postgres@bd082bae3670:/data/postgres$ 
+exit
+# 
+# exit()
+sh: 14: Syntax error: Bad function name
+# exit
+PS X:\projects\springboot\microservices> 
+
+--------------
+
